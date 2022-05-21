@@ -1,5 +1,6 @@
 package projeto;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,6 +22,26 @@ public class GerenciamentoDeHotel {
 		String roomExcluding;
 		int clientExcludingIndex;
 		int roomExcludingIndex;
+		int clientEditingIndex;
+		int clientEditingChoice;
+		String newClientName;
+		String newClientBirthDate;
+		String newClientEmail;
+		String newClientPhone;
+		String newClientCity;
+		String newClientUF;
+		String newClientSmoker;
+		int roomEditingIndex;
+		int roomEditingChoice;
+		String newRoomName;
+		String newRoomPosition;
+		String newRoomSmoker;
+		int newRoomCapacity;
+		float newRoomDailyRate;
+		int choseCheck;
+		String clientCheckIn;
+		int clientCheckInIndex;
+		int choseCheckin;
 
 		ArrayList<String> roomName = new ArrayList<String>();
 		ArrayList<String> roomPosition = new ArrayList<String>();
@@ -35,7 +56,10 @@ public class GerenciamentoDeHotel {
 		ArrayList<String> clientCity = new ArrayList<String>();
 		ArrayList<String> clientUF = new ArrayList<String>();
 		ArrayList<String> clientSmoker = new ArrayList<String>();
-
+		
+		ArrayList<String> checkInDate = new ArrayList<String>();
+		ArrayList<String> checkOutDate = new ArrayList<String>();
+		
 		// menu inicial
 		do {
 			System.out.println("***| Sistema De Gerenciamento De Hotel |***");
@@ -131,7 +155,77 @@ public class GerenciamentoDeHotel {
 					System.out.println("Qual Cliente deseja editar?");
 					System.out.println(clientName.toString());
 					clientEditing = sc.next();
-					clientName.indexOf(clientEditing);
+					clientEditingIndex = clientName.indexOf(clientEditing);
+					System.out.println("Qual informação gostaria de alterar?");
+					System.out.println("1- Nome");
+					System.out.println("2- Data de Nascimento");
+					System.out.println("3- Email");
+					System.out.println("4- Telefone");
+					System.out.println("5- Cidade");
+					System.out.println("6- UF");
+					System.out.println("7- Fumante");
+					System.out.println("0- Retornar");
+					clientEditingChoice = sc.nextInt();
+					do {
+
+						switch (clientEditingChoice) {
+
+						case 1:
+							System.out.println("Insira o novo Nome.");
+							newClientName = sc.next();
+							clientName.remove(clientEditingIndex);
+							clientName.add(clientEditingIndex, newClientName);
+
+							break;
+						case 2:
+							System.out.println("Insira a nova Data de Nascimento.");
+							newClientBirthDate = sc.next();
+							clientBirthDate.remove(clientEditingIndex);
+							clientBirthDate.add(clientEditingIndex, newClientBirthDate);
+							break;
+						case 3:
+							System.out.println("Insira o novo Email.");
+							newClientEmail = sc.next();
+							clientEmail.remove(clientEditingIndex);
+							clientEmail.add(clientEditingIndex, newClientEmail);
+							break;
+						case 4:
+							System.out.println("Insira o novo Telefone.");
+							newClientPhone = sc.next();
+							clientPhone.remove(clientEditingIndex);
+							clientPhone.add(clientEditingIndex, newClientPhone);
+							break;
+						case 5:
+							System.out.println("Insira a nova Cidade.");
+							newClientCity = sc.next();
+							clientCity.remove(clientEditingIndex);
+							clientCity.add(clientEditingIndex, newClientCity);
+							break;
+						case 6:
+							System.out.println("Insira a nova UF.");
+							newClientUF = sc.next();
+							clientUF.remove(clientEditingIndex);
+							clientUF.add(clientEditingIndex, newClientUF);
+							break;
+						case 7:
+							System.out.println("Insira se o cliente é Fumante.S/N");
+							newClientSmoker = sc.next();
+							clientSmoker.remove(clientEditingIndex);
+							clientSmoker.add(clientEditingIndex, newClientSmoker);
+							break;
+						case 0:
+							System.out.println("Retornando!");
+							System.out.println("");
+							break;
+
+						default:
+							System.out.println("Opção Inválida!");
+							System.out.println("");
+							break;
+						}
+						break;
+
+					} while (clientEditingChoice > 0);
 
 					break;
 				case 2:
@@ -153,6 +247,67 @@ public class GerenciamentoDeHotel {
 
 					break;
 				case 3:
+					System.out.println("Qual Quarto deseja editar?");
+					System.out.println(roomName.toString());
+					roomEditing = sc.next();
+					roomEditingIndex = clientName.indexOf(roomEditing);
+					System.out.println("Qual informação gostaria de alterar?");
+					System.out.println("1- Nome");
+					System.out.println("2- Posição");
+					System.out.println("3- Aceita Fumantes?");
+					System.out.println("4- Capacidade");
+					System.out.println("5- Diária");
+					System.out.println("0- Retornar");
+					roomEditingChoice = sc.nextInt();
+					do {
+
+						switch (roomEditingChoice) {
+
+						case 1:
+							System.out.println("Insira o novo Nome.");
+							newRoomName = sc.next();
+							roomName.remove(roomEditingIndex);
+							roomName.add(roomEditingIndex, newRoomName);
+
+							break;
+						case 2:
+							System.out.println("Insira a nova Posição.");
+							newRoomPosition = sc.next();
+							roomPosition.remove(roomEditingIndex);
+							roomPosition.add(roomEditingIndex, newRoomPosition);
+							break;
+						case 3:
+							System.out.println("Quarto aceita Fumantes?S/N");
+							newRoomSmoker = sc.next();
+							roomSmoker.remove(roomEditingIndex);
+							roomSmoker.add(roomEditingIndex, newRoomSmoker);
+							break;
+						case 4:
+							System.out.println("Insira a nova Capacidade.");
+							newRoomCapacity = sc.nextInt();
+							roomCapacity.remove(roomEditingIndex);
+							roomCapacity.add(roomEditingIndex, newRoomCapacity);
+							break;
+						case 5:
+							System.out.println("Insira a nova Diária.");
+							newRoomDailyRate = sc.nextFloat();
+							roomDailyRate.remove(roomEditingIndex);
+							roomDailyRate.add(roomEditingIndex, newRoomDailyRate);
+							break;
+
+						case 0:
+							System.out.println("Retornando!");
+							System.out.println("");
+							break;
+
+						default:
+							System.out.println("Opção Inválida!");
+							System.out.println("");
+							break;
+						}
+						break;
+
+					} while (clientEditingChoice > 0);
 
 					break;
 				case 4:
@@ -210,7 +365,79 @@ public class GerenciamentoDeHotel {
 				}
 				break;
 			case 4: // 4- Realizar Check-in/Check-out
+				System.out.println("1- Realizar check-in");
+				System.out.println("2- Realizar check-out");
+				System.out.println("0- Retornar");
+				choseCheck = sc.nextInt();
+
+				switch (choseCheck) {
+
+				case 1:
+
+					System.out.println("Cliente já cadastrado?");
+					System.out.println("1- Sim");
+					System.out.println("2- Não");
+					System.out.println("0- Retornar");
+					choseCheckin = sc.nextInt();
+
+					switch (choseCheckin) {
+					case 1:
+
+						System.out.println(clientName.toString());
+
+						clientCheckIn = sc.next();
+						clientCheckInIndex = clientName.indexOf(clientCheckIn);
+						LocalDate dia = LocalDate.now();
+						
+						checkInDate.addAll(dia,clientCheckInIndex);
+
+						// encontrar quarto
+						// vincular quarto cliente
+
+					case 2:
+						System.out.println("Cadastre o Cliente Primeiro!");
+						break;
+					case 0:
+						System.out.println("Retornando!");
+						System.out.println("");
+						break;
+
+					default:
+						System.out.println("Opção Inválida!");
+						System.out.println("");
+						break;
+
+					}
+					break;
+				case 2:
+
+				case 0:
+					System.out.println("Retornando!");
+					System.out.println("");
+					break;
+
+				default:
+					System.out.println("Opção Inválida!");
+					System.out.println("");
+					break;
+				}
 				break;
+			// check in
+			// informações
+			// data de entrada
+			// cadastro cliente
+
+			// ações
+			// encontrar quarto
+			// vincular quarto cliente
+
+			// check out
+			// informações
+			// data de saída
+
+			// ações
+			// desvincular quarto
+			// calcular valor da estadia
 
 			case 0: // 0- Sair
 
