@@ -1,12 +1,11 @@
 package projeto;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GerenciamentoDeHotel {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		@SuppressWarnings("resource")
 		Scanner sc = new Scanner(System.in);
 		sc.useDelimiter(System.lineSeparator());
@@ -37,11 +36,14 @@ public class GerenciamentoDeHotel {
 		String newRoomPosition;
 		String newRoomSmoker;
 		int newRoomCapacity;
-		float newRoomDailyRate;
+		Float newRoomDailyRate;
 		int choseCheck;
 		String clientCheckIn;
 		int clientCheckInIndex;
 		int choseCheckin;
+		Float stayDays;
+		double price = 0;
+		int i;
 
 		ArrayList<String> roomName = new ArrayList<String>();
 		ArrayList<String> roomPosition = new ArrayList<String>();
@@ -56,11 +58,12 @@ public class GerenciamentoDeHotel {
 		ArrayList<String> clientCity = new ArrayList<String>();
 		ArrayList<String> clientUF = new ArrayList<String>();
 		ArrayList<String> clientSmoker = new ArrayList<String>();
-		
-		ArrayList<String> checkInDate = new ArrayList<String>();
-		ArrayList<String> checkOutDate = new ArrayList<String>();
-		
-		// menu inicial
+
+		ArrayList<String> possibleChoiceRooms = new ArrayList<String>();
+
+		ArrayList<String> disponibleRooms = new ArrayList<String>();
+		ArrayList<String> undisponibleRooms = new ArrayList<String>();
+
 		do {
 			System.out.println("***| Sistema De Gerenciamento De Hotel |***");
 			System.out.println("");
@@ -74,7 +77,7 @@ public class GerenciamentoDeHotel {
 
 			switch (choice) {
 
-			case 1: // 1- Cadastrar novo Cliente/Quarto
+			case 1:
 
 				System.out.println("1- Cadastrar Cliente");
 				System.out.println("2- Cadastrar Quarto");
@@ -139,7 +142,7 @@ public class GerenciamentoDeHotel {
 					break;
 				}
 				break;
-			case 2: // 2- Editar e Excluir Cliente/Quarto
+			case 2:
 
 				System.out.println("1- Editar Cliente");
 				System.out.println("2- Excluir Cliente");
@@ -269,6 +272,12 @@ public class GerenciamentoDeHotel {
 							roomName.remove(roomEditingIndex);
 							roomName.add(roomEditingIndex, newRoomName);
 
+							for (i = 0; i <= undisponibleRooms.size(); i++) {
+								if (undisponibleRooms.get(i) == newRoomName) {
+									undisponibleRooms.set(i, newRoomName);
+								}
+							}
+
 							break;
 						case 2:
 							System.out.println("Insira a nova Posição.");
@@ -340,6 +349,7 @@ public class GerenciamentoDeHotel {
 
 				System.out.println("1- Listar Clientes");
 				System.out.println("2- Listar Quartos");
+				System.out.println("2- Listar Quartos Disponíveis");
 				System.out.println("0- Retornar");
 
 				listClientsOrRooms = sc.nextInt();
@@ -352,6 +362,18 @@ public class GerenciamentoDeHotel {
 
 				case 2:
 					System.out.println(roomName.toString());
+					break;
+				case 3:
+
+					for (i = 0; i < roomName.size(); i++) {
+						if (roomName.contains(undisponibleRooms.get(i))) {
+							disponibleRooms.add(i, null);
+						} else {
+							disponibleRooms.add(i, roomName.get(i));
+						}
+
+					}
+
 					break;
 				case 0:
 					System.out.println("Retornando!");
@@ -383,16 +405,64 @@ public class GerenciamentoDeHotel {
 					switch (choseCheckin) {
 					case 1:
 
-						System.out.println(clientName.toString());
+						System.out.println(clientName.toString()); 
+						System.out.println("Selecione o Cliente para Check-In");
+						clientCheckIn = sc.next(); 
+						clientCheckInIndex = clientName.indexOf(clientCheckIn); 
 
-						clientCheckIn = sc.next();
-						clientCheckInIndex = clientName.indexOf(clientCheckIn);
-						LocalDate dia = LocalDate.now();
-						
-						checkInDate.addAll(dia,clientCheckInIndex);
+						System.out.println("Quarto para Quantos?");
+						int desiredCapacity = sc.nextInt(); 
+			
+						for (i = 0; i < roomCapacity.size(); i++) {
+							if (roomCapacity.get(i) == desiredCapacity) {
 
-						// encontrar quarto
-						// vincular quarto cliente
+								possibleChoiceRooms.add(i, roomName.get(i));
+
+							} else {
+								possibleChoiceRooms.add(i, null);
+							}
+						}
+						System.out.println(possibleChoiceRooms.toString());
+						System.out.println("Qual a posição desejada?");
+						String desiredPosition = sc.next();
+
+						for (i = 0; i < roomPosition.size(); i++) {
+
+							if (roomPosition.get(i).equals(desiredPosition)) {
+
+							} else {
+								possibleChoiceRooms.set(i, null);
+							}
+						}
+						for (i = 0; i < roomSmoker.size(); i++) {
+
+							if (roomSmoker.get(i).equals(clientSmoker.get(clientCheckInIndex))) {
+
+							} else {
+								possibleChoiceRooms.set(i, null);
+							}
+
+							for (i = 0; i < possibleChoiceRooms.size(); i++) {
+								if (undisponibleRooms.contains(possibleChoiceRooms.get(i))) {
+									possibleChoiceRooms.set(i, null);
+								}
+							}
+
+							System.out.print("Os quartos que compreendem as condições são:");
+							for (i = 0; i < possibleChoiceRooms.size(); i++) {
+								if (possibleChoiceRooms.get(i) != null) {
+									System.out.print(possibleChoiceRooms.get(i) + ", ");
+
+								}
+							}
+							System.out.println("");
+							System.out.println("Qual o quarto desejado?");
+							String chosenRoom;
+							chosenRoom = sc.next();
+							undisponibleRooms.add(clientCheckInIndex, chosenRoom);
+
+						}
+						break;
 
 					case 2:
 						System.out.println("Cadastre o Cliente Primeiro!");
@@ -410,7 +480,24 @@ public class GerenciamentoDeHotel {
 					}
 					break;
 				case 2:
+					System.out.println(clientName.toString());
+					System.out.println("Selecione o Cliente para Check-Out");
+					clientCheckIn = sc.next();
+					clientCheckInIndex = clientName.indexOf(clientCheckIn);
 
+					System.out.println("Quantos dias de estadia?");
+					stayDays = sc.nextFloat();
+
+					for (i = 0; i < roomName.size(); i++) {
+						if (undisponibleRooms.get(clientCheckInIndex).equals(roomName.get(i))) {
+							price = stayDays * roomDailyRate.get(i);
+						}
+					}
+
+					System.out.println("A estadia custou: R$" + price + ".");
+					undisponibleRooms.set(clientCheckInIndex, null);
+
+					break;
 				case 0:
 					System.out.println("Retornando!");
 					System.out.println("");
@@ -422,24 +509,8 @@ public class GerenciamentoDeHotel {
 					break;
 				}
 				break;
-			// check in
-			// informações
-			// data de entrada
-			// cadastro cliente
 
-			// ações
-			// encontrar quarto
-			// vincular quarto cliente
-
-			// check out
-			// informações
-			// data de saída
-
-			// ações
-			// desvincular quarto
-			// calcular valor da estadia
-
-			case 0: // 0- Sair
+			case 0:
 
 				System.out.println("Saiu!");
 				System.out.println("");
@@ -452,20 +523,6 @@ public class GerenciamentoDeHotel {
 				break;
 			}
 		} while (true);
+
 	}
 }
-/*
- *
- * 
- * Criar um sistema de hotel onde permita: Cadastrar, Editar, Listar e Excluir
- * Clientes; Cadastrar, Editar, Listar e Excluir Quartos; Verificar os quartos
- * disponíveis para alocação; Realizar o check-in e o check-out. O cadastro dos
- * quartos devem ter Nome, Posição, Fumante?, Valor da Diária, qtd quarto e
- * disponibilidade de pessoas por quarto. Já o cadastro dos clientes deverá
- * constar: Nome, data de nascimento, e-mail, telefone, cidade, UF e fumante?.
- * 
- * Escopo a ser abordado no trabalho: Uso de Arrays e Matrizes, Funções, Laços
- * de decisão e repetição, Estrutura de Dados Introdução a lógica de
- * programação.
- * 
- */
